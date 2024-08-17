@@ -22,6 +22,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "Snapshot",
+                    "type": "Button",
+                    "id": "fa7efcd2-34f4-4ef5-b833-e3cd46e789b8",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -90,6 +99,17 @@
                     "action": "Rotate",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "0e05600d-1f79-43ea-b995-cf3ba19a0d14",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Snapshot",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }
