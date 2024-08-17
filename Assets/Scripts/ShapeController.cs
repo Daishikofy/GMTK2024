@@ -32,6 +32,7 @@ public class ShapeController : MonoBehaviour
         if (CheckShape(blocks))
         {
             Debug.Log("Create a new shape");
+            return null;
             /*
             GameObject result = Instantiate(new GameObject(), transform.position, Quaternion.identity);
             foreach (var validBlock in validBlocks)
@@ -40,7 +41,7 @@ public class ShapeController : MonoBehaviour
                 newBlock.isTrigger = true;
                 newBlock.GetComponent<Rigidbody>().isKinematic = true;
             }
-            
+
             return result;*/
         }
         Debug.Log("Do nothing");
@@ -53,10 +54,10 @@ public class ShapeController : MonoBehaviour
         
         foreach (var block in blocks)
         {
-            Debug.Log("Check block : " + block.gameObject.name);
+            //Debug.Log("Check block : " + block.gameObject.name);
             foreach (var negativeCollider in negativeColliders)
             {
-                if (negativeCollider.bounds.Intersects(block.BlockCollider.bounds))
+                if (block.IsCollidingWith(negativeCollider))
                 {
                     block.SetMaterial(invalidMaterial);
                     Debug.Log("Intersect with bad collider");
@@ -67,8 +68,10 @@ public class ShapeController : MonoBehaviour
             bool wasAdded = false;
             foreach (var positiveCollider in positiveColliders)
             {
-                if (positiveCollider.bounds.Intersects(block.BlockCollider.bounds))
+                //Debug.Log("collider: " + positiveCollider.bounds + " - object : " + block.BlockCollider.bounds);
+                if (block.IsCollidingWith(positiveCollider))
                 {
+                   // Debug.Log("INTERSECTION");
                     if (!wasAdded)
                     {
                         block.SetMaterial(validMaterial);
