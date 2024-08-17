@@ -1,7 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -10,9 +9,9 @@ public class GameManager : MonoBehaviour
     
     public ShapeController ShapeController;
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        
+        SceneManager.LoadScene("GameUI", LoadSceneMode.Additive);
     }
 
     // Update is called once per frame

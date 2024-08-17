@@ -91,7 +91,6 @@ public class ShapeController : MonoBehaviour
         
         if (validColliders == positiveColliders.Length)
         {
-            Debug.Log("VALID SHAPE YEY");
             return true;
         }
         
