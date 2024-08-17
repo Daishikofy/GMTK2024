@@ -86,6 +86,17 @@ public class PlayerController : MonoBehaviour
 
     public void OnRotate(InputAction.CallbackContext context)
     {
-        Debug.Log("OnRotate: " + context.ReadValue<Vector2>());
+        if (selectedObject != null && context.performed)
+        {
+            Vector2 value = context.ReadValue<Vector2>();
+            if (value.x != 0f)
+            { 
+                selectedObject.transform.Rotate( value.x * 90, 0f,0f);
+            }
+            else if (value.y != 0f)
+            { 
+                selectedObject.transform.Rotate(0f, 0f, value.y * 90);
+            }
+        }
     }
 }
