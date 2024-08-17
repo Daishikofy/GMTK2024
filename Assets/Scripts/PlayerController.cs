@@ -56,6 +56,11 @@ public class PlayerController : MonoBehaviour
                 selectedObject = hit.rigidbody;
                 selectedObject.useGravity = false;
                 selectedObject.drag = dragResistance;
+                
+                Vector3 alignedForward = NearestWorldAxis(selectedObject.transform.forward);
+                Vector3 alignedUp = NearestWorldAxis(selectedObject.transform.up);
+                selectedObject.rotation = Quaternion.LookRotation(alignedForward, alignedUp);
+                
                 selectedObject.constraints = RigidbodyConstraints.FreezeRotation;
             }
         }
@@ -103,5 +108,26 @@ public class PlayerController : MonoBehaviour
                 selectedObject.transform.Rotate(0f, 0f, value.y * rotationSnap);
             }
         }
+    }
+    
+    private static Vector3 NearestWorldAxis(Vector3 v)
+    {
+        if (Mathf.Abs(v.x) < Mathf.Abs(v.y))
+        {
+            v.x = 0;
+            if (Mathf.Abs(v.y) < Mathf.Abs(v.z))
+                v.y = 0;
+            else
+                v.z = 0;
+        }
+        else
+        {
+            v.y = 0;
+            if (Mathf.Abs(v.x) < Mathf.Abs(v.z))
+                v.x = 0;
+            else
+                v.z = 0;
+        }
+        return v;
     }
 }
