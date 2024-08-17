@@ -1,8 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Serialization;
 
 public class PlayerController : MonoBehaviour
 {
@@ -15,31 +12,22 @@ public class PlayerController : MonoBehaviour
 
     public float rotationSnap = 90;
     public float scaleSnap = 1;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         if (selectedObject != null)
         {
             var newPosition = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10f));
-            //selectedObject.MovePosition(newPosition);
-            Debug.DrawLine(selectedObject.position, newPosition, Color.green);
             Vector3 force = (newPosition - selectedObject.position) * dragForce;
             selectedObject.AddForce(force, ForceMode.Acceleration);
             
             if (Input.mouseScrollDelta.y > 0)
             {
-                Debug.Log("Size up");
                 selectedObject.transform.localScale += Vector3.one * scaleSnap;
             }
             if (Input.mouseScrollDelta.y < 0)
             {
-                Debug.Log("Size down");
                 selectedObject.transform.localScale -= Vector3.one * scaleSnap;
             }
         }
@@ -70,8 +58,6 @@ public class PlayerController : MonoBehaviour
             Physics.Raycast(ray, out RaycastHit hit);
             if (hit.rigidbody != null)
             {
-                Debug.DrawRay(ray.origin, ray.direction * 10f, Color.red, 10f);
-                Debug.Log(hit.transform.gameObject.name + ": " + hit.point);
                 targetedObject = hit.rigidbody;
             }
         }
@@ -79,7 +65,6 @@ public class PlayerController : MonoBehaviour
         {
             if (selectedObject != null)
             {
-                //selectedObject.mass = 1;
                 selectedObject.useGravity = true;
                 selectedObject.drag = 0;
                 selectedObject.constraints = RigidbodyConstraints.None;
@@ -88,10 +73,6 @@ public class PlayerController : MonoBehaviour
             }
             targetedObject = null;
         }
-
-        
-        //Ray ray = new Ray(transform.position, transform.forward);
-
     }
 
     public void OnRotate(InputAction.CallbackContext context)

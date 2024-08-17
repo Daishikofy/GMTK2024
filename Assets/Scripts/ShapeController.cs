@@ -12,7 +12,7 @@ public class ShapeController : MonoBehaviour
     public Collider[] positiveColliders;
     public Collider[] negativeColliders;
     
-    public List<Collider> validBlocks;
+    public List<BlockController> validBlocks;
 
     private void Start()
     {
@@ -26,35 +26,13 @@ public class ShapeController : MonoBehaviour
             negativeCollider.isTrigger = true;
         }
     }
-
-    public GameObject ValidateShape(BlockController[] blocks)
-    {
-        if (CheckShape(blocks))
-        {
-            Debug.Log("Create a new shape");
-            return null;
-            /*
-            GameObject result = Instantiate(new GameObject(), transform.position, Quaternion.identity);
-            foreach (var validBlock in validBlocks)
-            {
-                var newBlock = Instantiate(validBlock, result.transform);
-                newBlock.isTrigger = true;
-                newBlock.GetComponent<Rigidbody>().isKinematic = true;
-            }
-
-            return result;*/
-        }
-        Debug.Log("Do nothing");
-        return null;
-    }
-
+    
     public bool CheckShape(BlockController[] blocks)
     {
         int validColliders = 0;
         
         foreach (var block in blocks)
         {
-            //Debug.Log("Check block : " + block.gameObject.name);
             foreach (var negativeCollider in negativeColliders)
             {
                 if (block.IsCollidingWith(negativeCollider))
@@ -68,14 +46,12 @@ public class ShapeController : MonoBehaviour
             bool wasAdded = false;
             foreach (var positiveCollider in positiveColliders)
             {
-                //Debug.Log("collider: " + positiveCollider.bounds + " - object : " + block.BlockCollider.bounds);
                 if (block.IsCollidingWith(positiveCollider))
                 {
-                   // Debug.Log("INTERSECTION");
                     if (!wasAdded)
                     {
                         block.SetMaterial(validMaterial);
-                        validBlocks.Add(positiveCollider);
+                        validBlocks.Add(block);
                         wasAdded = true;
                     }
                     validColliders++;
@@ -91,9 +67,18 @@ public class ShapeController : MonoBehaviour
         
         if (validColliders == positiveColliders.Length)
         {
+            FreezeBlocks();
             return true;
         }
         
         return false;
+    }
+
+    private void FreezeBlocks()
+    {
+        foreach (var validBlock in validBlocks)
+        {
+            validBlock.FreezeBlock();
+        }
     }
 }
