@@ -12,6 +12,9 @@ public class PlayerController : MonoBehaviour
 
     public float dragForce = 50f;
     public float dragResistance = 10f;
+
+    public float rotationSnap = 90;
+    public float scaleSnap = 1;
     // Start is called before the first frame update
     void Start()
     {
@@ -28,15 +31,17 @@ public class PlayerController : MonoBehaviour
             Debug.DrawLine(selectedObject.position, newPosition, Color.green);
             Vector3 force = (newPosition - selectedObject.position) * dragForce;
             selectedObject.AddForce(force, ForceMode.Acceleration);
-        }
-
-        if (Input.mouseScrollDelta.y > 0)
-        {
-            Debug.Log("Size up");
-        }
-        if (Input.mouseScrollDelta.y < 0)
-        {
-            Debug.Log("Size down");
+            
+            if (Input.mouseScrollDelta.y > 0)
+            {
+                Debug.Log("Size up");
+                selectedObject.transform.localScale += Vector3.one * scaleSnap;
+            }
+            if (Input.mouseScrollDelta.y < 0)
+            {
+                Debug.Log("Size down");
+                selectedObject.transform.localScale -= Vector3.one * scaleSnap;
+            }
         }
     }
 
@@ -91,11 +96,11 @@ public class PlayerController : MonoBehaviour
             Vector2 value = context.ReadValue<Vector2>();
             if (value.x != 0f)
             { 
-                selectedObject.transform.Rotate( value.x * 90, 0f,0f);
+                selectedObject.transform.Rotate( value.x * rotationSnap, 0f,0f);
             }
             else if (value.y != 0f)
             { 
-                selectedObject.transform.Rotate(0f, 0f, value.y * 90);
+                selectedObject.transform.Rotate(0f, 0f, value.y * rotationSnap);
             }
         }
     }
