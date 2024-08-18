@@ -4,6 +4,7 @@ public class UIManager : MonoBehaviour
 {
     public GameObject gameOverPanel;
     public GameObject gameWinPanel;
+    public GameObject gameEndPanel;
 
     public string sceneName;
 
@@ -11,15 +12,18 @@ public class UIManager : MonoBehaviour
     {
         gameOverPanel.SetActive(false);
         gameWinPanel.SetActive(false);
+        gameEndPanel.SetActive(false);
     }
 
     public void ShowGameOverPanel()
     {
+        gameEndPanel.SetActive(true);
         gameOverPanel.SetActive(true);
     }
 
     public void ShowGameWinPanel()
     {
+        gameEndPanel.SetActive(true);
         gameWinPanel.SetActive(true);
     }
 

@@ -55,6 +55,9 @@ public class GameManager : MonoBehaviour
         await SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
         SceneManager.SetActiveScene(SceneManager.GetSceneByName(sceneName));
         
+        await SceneManager.UnloadSceneAsync(UISceneName);
+        await SceneManager.LoadSceneAsync(UISceneName, LoadSceneMode.Additive);
+        
         currentLoadedLevel = sceneName;
     }
 }
