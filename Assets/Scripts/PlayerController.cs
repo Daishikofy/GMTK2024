@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -12,8 +13,7 @@ public class PlayerController : MonoBehaviour
 
     public float rotationSnap = 90;
     public float scaleSnap = 1;
-
-    // Update is called once per frame
+    
     void FixedUpdate()
     {
         if (selectedObject != null)

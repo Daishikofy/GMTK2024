@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -25,8 +26,11 @@ public class GameManager : MonoBehaviour
         instance = this;
         
         DontDestroyOnLoad(gameObject);
+    }
+
+    private void Start()
+    {
         uiManager.UpdateBlockUI(currentLevelManager.blocksInventory);
-        
     }
 
     public void SpawnBlock(BlockEnum blockType)
