@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class UIManager : MonoBehaviour
@@ -5,6 +6,8 @@ public class UIManager : MonoBehaviour
     public GameObject gameOverPanel;
     public GameObject gameWinPanel;
     public GameObject gameEndPanel;
+    
+    public BlockUIButtonManager blockUIButtonManager;
 
     public string sceneName;
 
@@ -32,9 +35,13 @@ public class UIManager : MonoBehaviour
         GameManager.Instance?.RestartLevel();
     }
 
-    public void ChangeLevel()
+    public void OnValidateButton()
     {
-        GameManager.Instance?.LoadLevel(sceneName);
+        GameManager.Instance?.currentLevelManager.ValidateCurrentShape();
     }
-    
+
+    public void UpdateBlockUI(int[] blockInventory)
+    {
+        blockUIButtonManager.UpdateBlockCount(blockInventory);
+    }
 }

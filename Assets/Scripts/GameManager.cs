@@ -7,11 +7,13 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance => instance;
     
     public string firstLevelName;
-    public string UISceneName = "GameUI";
+    
+    public BlockController[] blocks;
     
     [Header("Debug")]
-    public string mainSceneName;
     public string currentLoadedLevel;
+    public LevelManager currentLevelManager;
+    public UIManager uiManager;
     
     private void Awake()
     {
@@ -21,23 +23,15 @@ public class GameManager : MonoBehaviour
             return;
         }
         instance = this;
+        
         DontDestroyOnLoad(gameObject);
+        uiManager.UpdateBlockUI(currentLevelManager.blocksInventory);
         
-        /////
-        
-        if (SceneManager.GetSceneByName(UISceneName).name != UISceneName)
-        {
-            SceneManager.LoadScene(UISceneName, LoadSceneMode.Additive);
-        }
-        
-        if (SceneManager.GetSceneByName(firstLevelName).name != firstLevelName)
-        {
-            LoadLevel(firstLevelName);
-        }
-        else
-        {
-            currentLoadedLevel = firstLevelName;
-        }
+    }
+
+    public void SpawnBlock(BlockEnum blockType)
+    {
+        currentLevelManager.SpawnBlock(blockType, blocks);
     }
 
     public void RestartLevel()
@@ -46,18 +40,15 @@ public class GameManager : MonoBehaviour
     }
 
     public async void LoadLevel(string sceneName)
-    { 
-        if (sceneName != UISceneName)
-        {
-           await SceneManager.UnloadSceneAsync(currentLoadedLevel);
-        }  
-        
-        await SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
+    {
+        await SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Single);
         SceneManager.SetActiveScene(SceneManager.GetSceneByName(sceneName));
         
-        await SceneManager.UnloadSceneAsync(UISceneName);
-        await SceneManager.LoadSceneAsync(UISceneName, LoadSceneMode.Additive);
-        
         currentLoadedLevel = sceneName;
+
+        currentLevelManager = FindFirstObjectByType<LevelManager>();
+        uiManager = FindFirstObjectByType<UIManager>();
+        
+        uiManager.UpdateBlockUI(currentLevelManager.blocksInventory);
     }
 }

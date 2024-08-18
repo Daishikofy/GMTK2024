@@ -12,8 +12,12 @@ public class ShapeController : MonoBehaviour
     public Collider[] positiveColliders;
     public Collider[] negativeColliders;
     
+    [Header("Game Data")]
+    public int[] blocksInventory = new int[6];
+    public Transform shapeCenter;
+    
+    [Header("Debug")]
     public List<BlockController> validBlocks;
-
     private void Start()
     {
         foreach (Collider positiveCollider in positiveColliders)
@@ -25,9 +29,14 @@ public class ShapeController : MonoBehaviour
         {
             negativeCollider.isTrigger = true;
         }
+
+        if (shapeCenter == null)
+        {
+            shapeCenter = transform;
+        }
     }
     
-    public bool CheckShape(BlockController[] blocks)
+    public bool CheckShape(List<BlockController> blocks)
     {
         int validColliders = 0;
         

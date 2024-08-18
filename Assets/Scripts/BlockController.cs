@@ -5,7 +5,8 @@ using UnityEngine;
 public class BlockController : MonoBehaviour
 {
     public MeshRenderer BlockMeshRenderer;
-
+    public Rigidbody BlockRigidbody;
+    
     public List<Collider> CollidersInTrigger;
 
     private bool IsFreezed;
@@ -16,6 +17,7 @@ public class BlockController : MonoBehaviour
     private void Start()
     {
         BlockMeshRenderer = GetComponent<MeshRenderer>();
+        BlockRigidbody = GetComponent<Rigidbody>();
     }
 
     private void Update()
@@ -25,7 +27,7 @@ public class BlockController : MonoBehaviour
             var dist = Vector3.Distance(transform.position, freezePosition);
             if (dist > 0.2f)
             {
-                LevelManager.Instance.FallingCastle();
+                GameManager.Instance.currentLevelManager.FallingCastle();
                 IsFalling = true;
             }
         }

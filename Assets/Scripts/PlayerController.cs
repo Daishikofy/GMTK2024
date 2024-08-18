@@ -35,21 +35,13 @@ public class PlayerController : MonoBehaviour
 
     public void OnClick(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (context.performed && selectedObject == null)
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             Physics.Raycast(ray, out RaycastHit hit);
             if (hit.rigidbody != null && hit.rigidbody == targetedObject)
             {
-                selectedObject = hit.rigidbody;
-                selectedObject.useGravity = false;
-                selectedObject.drag = dragResistance;
-                
-                Vector3 alignedForward = NearestWorldAxis(selectedObject.transform.forward);
-                Vector3 alignedUp = NearestWorldAxis(selectedObject.transform.up);
-                selectedObject.rotation = Quaternion.LookRotation(alignedForward, alignedUp);
-                
-                selectedObject.constraints = RigidbodyConstraints.FreezeRotation;
+                SelectObject(hit.rigidbody);
             }
         }
         else if (context.started)
@@ -110,5 +102,18 @@ public class PlayerController : MonoBehaviour
                 v.z = 0;
         }
         return v;
+    }
+
+    public void SelectObject(Rigidbody objectToSelect)
+    {
+        selectedObject = objectToSelect;
+        selectedObject.useGravity = false;
+        selectedObject.drag = dragResistance;
+                
+        Vector3 alignedForward = NearestWorldAxis(selectedObject.transform.forward);
+        Vector3 alignedUp = NearestWorldAxis(selectedObject.transform.up);
+        selectedObject.rotation = Quaternion.LookRotation(alignedForward, alignedUp);
+                
+        selectedObject.constraints = RigidbodyConstraints.FreezeRotation;
     }
 }
