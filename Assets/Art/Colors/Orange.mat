@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: ToonMat 3
+  m_Name: Orange
   m_Shader: {fileID: 4800000, guid: 4fa5c369d3803ff11953d5bf6e2c2422, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -72,17 +72,17 @@ Material:
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
-    - _RimAmount: 0.583
-    - _RimThreshold: 0.084
+    - _RimAmount: 0.571
+    - _RimThreshold: 0.113
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
-    - _AmbientColor: {r: 1, g: 0.7267239, b: 0.5707547, a: 1}
-    - _Color: {r: 0.35686272, g: 0.9529411, b: 0.48898017, a: 1}
+    - _AmbientColor: {r: 0.8113208, g: 0.35218477, b: 0.06505875, a: 1}
+    - _Color: {r: 0.990566, g: 0.6643414, b: 0.41585082, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _RimColor: {r: 0.5330188, g: 1, b: 0.6821109, a: 1}
-    - _SpecularColor: {r: 0.023584902, g: 1, b: 0.6449401, a: 1}
+    - _RimColor: {r: 0.41037738, g: 1, b: 0.5986603, a: 1}
+    - _SpecularColor: {r: 0.48126557, g: 0.9716981, b: 0.8704364, a: 1}
   m_BuildTextureStacks: []
