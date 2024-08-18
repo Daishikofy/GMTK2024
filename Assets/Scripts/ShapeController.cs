@@ -59,7 +59,6 @@ public class ShapeController : MonoBehaviour
                 {
                     if (!wasAdded)
                     {
-                        block.SetMaterial(validMaterial);
                         validBlocks.Add(block);
                         wasAdded = true;
                     }

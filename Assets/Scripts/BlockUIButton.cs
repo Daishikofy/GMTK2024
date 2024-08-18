@@ -25,9 +25,13 @@ public class BlockUIButton : MonoBehaviour
     private void UpdateButtonState()
     {
         buttonText.text = currentValue.ToString();
-        if (currentValue == 0)
+        if (currentValue <= 0)
         {
             button.interactable = false;
+        }
+        else
+        {
+            button.interactable = true;
         }
     }
 

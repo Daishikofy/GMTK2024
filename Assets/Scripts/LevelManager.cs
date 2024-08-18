@@ -59,6 +59,7 @@ public class LevelManager : MonoBehaviour
             }
             else
             {
+                shapeControllers[currentShape].gameObject.SetActive(false);
                 GameManager.Instance.uiManager.ShowGameWinPanel();
             }
         }
@@ -76,9 +77,9 @@ public class LevelManager : MonoBehaviour
         shapeControllers[currentShape].gameObject.SetActive(true);
 
         Vector3 cameraMovement = shapeControllers[currentShape].shapeCenter.position - oldPosition;
-        Camera.main.transform.position += cameraMovement;
+        //Camera.main.transform.position += cameraMovement;
         SumInventory(shapeControllers[currentShape].blocksInventory);
-        
+        GameManager.Instance.uiManager.UpdateBlockUI(blocksInventory);
     }
 
     public void FallingCastle()
