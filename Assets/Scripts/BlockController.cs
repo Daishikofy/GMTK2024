@@ -25,7 +25,7 @@ public class BlockController : MonoBehaviour
             var dist = Vector3.Distance(transform.position, freezePosition);
             if (dist > 0.2f)
             {
-                GameManager.Instance.FallingCastle();
+                LevelManager.Instance.FallingCastle();
                 IsFalling = true;
             }
         }

@@ -1,18 +1,36 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public GameObject gameOverPanel;
+    public GameObject gameWinPanel;
+
+    public string sceneName;
+
+    public void Start()
     {
-        
+        gameOverPanel.SetActive(false);
+        gameWinPanel.SetActive(false);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void ShowGameOverPanel()
     {
-        
+        gameOverPanel.SetActive(true);
     }
+
+    public void ShowGameWinPanel()
+    {
+        gameWinPanel.SetActive(true);
+    }
+
+    public void OnRestartButton()
+    {
+        GameManager.Instance?.RestartLevel();
+    }
+
+    public void ChangeLevel()
+    {
+        GameManager.Instance?.LoadLevel(sceneName);
+    }
+    
 }

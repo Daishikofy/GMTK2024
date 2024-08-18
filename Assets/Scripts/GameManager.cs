@@ -1,65 +1,60 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     private static GameManager instance;
     public static GameManager Instance => instance;
-    public BlockController[] buildingBlocks;
     
-    public ShapeController[] shapeControllers;
-
-    private int currentShape;
-    // Start is called before the first frame update
-    void Awake()
+    public string firstLevelName;
+    public string UISceneName = "GameUI";
+    
+    [Header("Debug")]
+    public string mainSceneName;
+    public string currentLoadedLevel;
+    
+    private void Awake()
     {
         if (instance != null && instance != this)
         {
-            Destroy(this);
+            Destroy(gameObject);
+            return;
         }
         instance = this;
+        DontDestroyOnLoad(gameObject);
         
-        SceneManager.LoadScene("GameUI", LoadSceneMode.Additive);
-        foreach (var shape in shapeControllers)
+        /////
+        
+        if (SceneManager.GetSceneByName(UISceneName).name != UISceneName)
         {
-            shape.gameObject.SetActive(false);
+            SceneManager.LoadScene(UISceneName, LoadSceneMode.Additive);
         }
-        shapeControllers[currentShape].gameObject.SetActive(true);
-        buildingBlocks = FindObjectsByType<BlockController>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
-    }
-
-    public void Snapshot(InputAction.CallbackContext context)
-    {
-        if (context.performed)
+        
+        if (SceneManager.GetSceneByName(firstLevelName).name != firstLevelName)
         {
-            if (shapeControllers[currentShape].CheckShape(buildingBlocks))
-            {
-                if (currentShape < shapeControllers.Length)
-                {
-                    NextLevel();
-                }
-                else
-                {
-                    Debug.Log("YOU WON");
-                }
-            }
-            else
-            {
-                Debug.Log("Game over");
-            }
+            LoadLevel(firstLevelName);
+        }
+        else
+        {
+            currentLoadedLevel = firstLevelName;
         }
     }
 
-    private void NextLevel()
+    public void RestartLevel()
     {
-        shapeControllers[currentShape].gameObject.SetActive(false);
-        currentShape++;
-        shapeControllers[currentShape].gameObject.SetActive(true);
+        LoadLevel(currentLoadedLevel);
     }
 
-    public void FallingCastle()
-    {
-        Time.timeScale = 0.2f;
+    public async void LoadLevel(string sceneName)
+    { 
+        if (sceneName != UISceneName)
+        {
+           await SceneManager.UnloadSceneAsync(currentLoadedLevel);
+        }  
+        
+        await SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
+        SceneManager.SetActiveScene(SceneManager.GetSceneByName(sceneName));
+        
+        currentLoadedLevel = sceneName;
     }
 }
