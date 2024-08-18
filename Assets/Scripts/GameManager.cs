@@ -26,6 +26,7 @@ public class GameManager : MonoBehaviour
             shape.gameObject.SetActive(false);
         }
         shapeControllers[currentShape].gameObject.SetActive(true);
+        buildingBlocks = FindObjectsByType<BlockController>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
     }
 
     public void Snapshot(InputAction.CallbackContext context)
@@ -59,6 +60,6 @@ public class GameManager : MonoBehaviour
 
     public void FallingCastle()
     {
-        Time.timeScale = 0.5f;
+        Time.timeScale = 0.2f;
     }
 }
