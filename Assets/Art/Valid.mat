@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: ToonMat
+  m_Name: Valid
   m_Shader: {fileID: 4800000, guid: 4fa5c369d3803ff11953d5bf6e2c2422, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -81,7 +81,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _AmbientColor: {r: 1, g: 0.7267239, b: 0.5707547, a: 1}
-    - _Color: {r: 1, g: 0.4009434, b: 0.4009434, a: 1}
+    - _Color: {r: 0.35686272, g: 0.9529411, b: 0.48898017, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _RimColor: {r: 0.5330188, g: 1, b: 0.6821109, a: 1}
     - _SpecularColor: {r: 0.023584902, g: 1, b: 0.6449401, a: 1}
