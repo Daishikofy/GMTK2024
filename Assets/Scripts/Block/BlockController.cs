@@ -1,20 +1,21 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 
 public class BlockController : MonoBehaviour
 {
     public MeshRenderer BlockMeshRenderer;
     public Rigidbody BlockRigidbody;
+    public float minVelocity = 0.1f;
     
     public List<Collider> CollidersInTrigger;
-
-    private bool IsFreezed;
-    private Vector3 freezePosition;
-
-
     public bool isSelected = false;
+
+    public float velocityMagnitude;
+    private bool IsFreezed;
     private bool IsFalling = false;
+    private Vector3 freezePosition;
 
     private float initialDragResistance;
     private void Awake()
@@ -24,8 +25,21 @@ public class BlockController : MonoBehaviour
         initialDragResistance = BlockRigidbody.drag;
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
+        if (!isSelected)
+        {
+            if (BlockRigidbody.velocity.magnitude < minVelocity)
+            {
+                BlockRigidbody.velocity = Vector3.zero;
+            }
+
+            if (BlockRigidbody.angularVelocity.magnitude < minVelocity)
+            {
+                BlockRigidbody.angularVelocity = Vector3.zero;
+            }
+        }
+
         if (IsFreezed && !IsFalling)
         {
             var dist = Vector3.Distance(transform.position, freezePosition);
