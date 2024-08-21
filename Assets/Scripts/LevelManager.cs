@@ -21,6 +21,7 @@ public class LevelManager : MonoBehaviour
     public Camera mainCamera;
     public Vector3 cameraTarget;
 
+    private bool gameOver = false;
     private void Start()
     {
         mainCamera = Camera.main;
@@ -65,7 +66,7 @@ public class LevelManager : MonoBehaviour
             var position = mainCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y - 1, 10f));
             BlockController newBlock = Instantiate(blocks[blockIndex], position, Quaternion.identity);
             buildingBlocks.Add(newBlock);
-            playerController.SelectObject(newBlock.BlockRigidbody);
+            playerController.SelectObject(newBlock);
         }
     }
 
@@ -122,15 +123,17 @@ public class LevelManager : MonoBehaviour
         GameManager.Instance.uiManager.UpdateBlockUI(blocksInventory);
     }
 
-    public async void FallingCastle(Vector3 fallingBlock)
+    public void FallingCastle(Vector3 fallingBlock)
     {
-        var cameraDirection = fallingBlock - shapeControllers[currentShape].transform.position;
-        cameraTarget = mainCamera.transform.position + cameraDirection;
-        
-        await Task.Delay(10);
-        
-        Time.timeScale = 0.2f;
-        GameManager.Instance.uiManager.ShowGameOverPanel();
+        if (!gameOver)
+        {
+            var cameraDirection = fallingBlock - shapeControllers[currentShape].transform.position;
+            cameraTarget = mainCamera.transform.position + cameraDirection;
+
+            Time.timeScale = 0.2f;
+            GameManager.Instance.uiManager.ShowGameOverPanel();
+            gameOver = true;
+        }
     }
 
     private void SumInventory(int[] inventory)

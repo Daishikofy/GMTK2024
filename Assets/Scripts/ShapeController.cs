@@ -42,27 +42,30 @@ public class ShapeController : MonoBehaviour
         
         foreach (var block in blocks)
         {
-            foreach (var negativeCollider in negativeColliders)
+            if (!block.isSelected)
             {
-                if (block.IsCollidingWith(negativeCollider))
+                foreach (var negativeCollider in negativeColliders)
                 {
-                    block.SetMaterial(invalidMaterial);
-                    Debug.Log("Intersect with bad collider");
-                    return false;
-                }
-            }
-            
-            bool wasAdded = false;
-            foreach (var positiveCollider in positiveColliders)
-            {
-                if (block.IsCollidingWith(positiveCollider))
-                {
-                    if (!wasAdded)
+                    if (block.IsCollidingWith(negativeCollider))
                     {
-                        validBlocks.Add(block);
-                        wasAdded = true;
+                        block.SetMaterial(invalidMaterial);
+                        Debug.Log("Intersect with bad collider");
+                        return false;
                     }
-                    validColliders++;
+                }
+                
+                bool wasAdded = false;
+                foreach (var positiveCollider in positiveColliders)
+                {
+                    if (block.IsCollidingWith(positiveCollider))
+                    {
+                        if (!wasAdded)
+                        {
+                            validBlocks.Add(block);
+                            wasAdded = true;
+                        }
+                        validColliders++;
+                    }
                 }
             }
         } 

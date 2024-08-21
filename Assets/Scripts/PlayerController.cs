@@ -5,30 +5,35 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     
-    public Rigidbody targetedObject;
-    public Rigidbody selectedObject;
+    public BlockController targetedObject;
+    public BlockController selectedObject;
 
     public float dragForce = 50f;
     public float dragResistance = 10f;
 
     public float rotationSnap = 90;
     public float scaleSnap = 1;
+
+    public float minScale = 0f;
+    public float maxScale = 3f;
     
     void FixedUpdate()
     {
         if (selectedObject != null)
         {
             var newPosition = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10f));
-            Vector3 force = (newPosition - selectedObject.position) * dragForce;
-            selectedObject.AddForce(force, ForceMode.Acceleration);
+            Vector3 force = (newPosition - selectedObject.transform.position) * dragForce;
+            selectedObject.BlockRigidbody.AddForce(force, ForceMode.Acceleration);
             
             if (Input.mouseScrollDelta.y > 0)
             {
-                selectedObject.transform.localScale += Vector3.one * scaleSnap;
+                if (selectedObject.transform.localScale.x + scaleSnap <= maxScale)
+                    selectedObject.transform.localScale += Vector3.one * scaleSnap;
             }
             if (Input.mouseScrollDelta.y < 0)
             {
-                selectedObject.transform.localScale -= Vector3.one * scaleSnap;
+                if (selectedObject.transform.localScale.x - scaleSnap > minScale)
+                    selectedObject.transform.localScale -= Vector3.one * scaleSnap;
             }
         }
     }
@@ -39,28 +44,27 @@ public class PlayerController : MonoBehaviour
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             Physics.Raycast(ray, out RaycastHit hit);
-            if (hit.rigidbody != null && hit.rigidbody == targetedObject)
+            var block = hit.rigidbody?.gameObject.GetComponent<BlockController>();
+            if (block != null && block == targetedObject)
             {
-                SelectObject(hit.rigidbody);
+                SelectObject(block);
             }
         }
         else if (context.started)
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             Physics.Raycast(ray, out RaycastHit hit);
-            if (hit.rigidbody != null)
+            var block = hit.rigidbody?.gameObject.GetComponent<BlockController>();
+            if (block != null)
             {
-                targetedObject = hit.rigidbody;
+                targetedObject = block;
             }
         }
         else if (context.canceled)
         {
             if (selectedObject != null)
             {
-                selectedObject.useGravity = true;
-                selectedObject.drag = 0;
-                selectedObject.constraints = RigidbodyConstraints.None;
-                selectedObject.constraints = RigidbodyConstraints.FreezePositionZ;
+                selectedObject.ReleaseBlock();
                 selectedObject = null;
             }
             targetedObject = null;
@@ -82,38 +86,10 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
-    
-    private static Vector3 NearestWorldAxis(Vector3 v)
-    {
-        if (Mathf.Abs(v.x) < Mathf.Abs(v.y))
-        {
-            v.x = 0;
-            if (Mathf.Abs(v.y) < Mathf.Abs(v.z))
-                v.y = 0;
-            else
-                v.z = 0;
-        }
-        else
-        {
-            v.y = 0;
-            if (Mathf.Abs(v.x) < Mathf.Abs(v.z))
-                v.x = 0;
-            else
-                v.z = 0;
-        }
-        return v;
-    }
 
-    public void SelectObject(Rigidbody objectToSelect)
+    public void SelectObject(BlockController block)
     {
-        selectedObject = objectToSelect;
-        selectedObject.useGravity = false;
-        selectedObject.drag = dragResistance;
-                
-        Vector3 alignedForward = NearestWorldAxis(selectedObject.transform.forward);
-        Vector3 alignedUp = NearestWorldAxis(selectedObject.transform.up);
-        selectedObject.rotation = Quaternion.LookRotation(alignedForward, alignedUp);
-                
-        selectedObject.constraints = RigidbodyConstraints.FreezeRotation;
+        selectedObject = block;
+        selectedObject.SelectBlock(dragResistance);
     }
 }
